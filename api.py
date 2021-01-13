@@ -50,8 +50,8 @@ def create_db():
 def insert_rate(rate):
     dates_and_rates = []
     dates_and_rates.append((date.today(), rate, True))
-    dates_and_rates.append((datetime.date.today(), rate*2, true))
-    dates_and_rates.append((datetime.date.today(), rate*4, true))
+    dates_and_rates.append((date.today(), rate*2, true))
+    dates_and_rates.append((date.today(), rate*4, true))
     command = "INSERT INTO PLN_EXCHANGE_RATES(date, rate, interpolated) VALUES(%s, %s, %s)"
     cur = conn.cursor()
     cur.execute(command, dates_and_rates)
