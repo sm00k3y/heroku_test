@@ -4,7 +4,7 @@ import db_init
 import os
 import psycopg2
 from flask import jsonify
-from datetime import datetime
+from datetime import datetime, date
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from cache import Cache
@@ -49,7 +49,7 @@ def create_db():
 @app.route('/insert/<rate>', methods=['GET'])
 def insert_rate(rate):
     dates_and_rates = []
-    dates_and_rates.append((datetime.date.today(), rate, true))
+    dates_and_rates.append((date.today(), rate, true))
     dates_and_rates.append((datetime.date.today(), rate*2, true))
     dates_and_rates.append((datetime.date.today(), rate*4, true))
     command = "INSERT INTO PLN_EXCHANGE_RATES(date, rate, interpolated) VALUES(%s, %s, %s)"
