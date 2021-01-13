@@ -1,5 +1,5 @@
 import requests
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from datetime import timedelta
 
 
