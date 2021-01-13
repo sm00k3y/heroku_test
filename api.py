@@ -49,7 +49,7 @@ conn = psycopg2.connect(
 def create_db():
 
     command = '''CREATE TABLE PLN_EXCHANGE_RATES (
-        date DATE NOT NULL,
+        date VARCHAR(254),
         rate NUMERIC,
         interpolated BOOLEAN
     )'''
