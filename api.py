@@ -2,6 +2,7 @@ import flask
 import db_handler
 import db_init
 import os
+import psycopg2
 from flask import jsonify
 from datetime import datetime
 from flask_limiter import Limiter
