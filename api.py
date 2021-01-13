@@ -28,7 +28,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 
-@app.route('/create'), methods=['GET']
+@app.route('/create', methods=['GET'])
 def create_db():
 
     command = '''CREATE TABLE PLN_EXCHANGE_RATES (
@@ -45,7 +45,7 @@ def create_db():
     return """<h1>Success</h1>"""
 
 
-@app.route('/insert/<rate>'), methods=['GET']
+@app.route('/insert/<rate>', methods=['GET'])
 def insert_rate(rate):
     dates_and_rates = []
     dates_and_rates.append((datetime.date.today(), rate, true))
