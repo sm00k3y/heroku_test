@@ -1,6 +1,7 @@
 import flask
 import db_handler
 import db_init
+import os
 from flask import jsonify
 from datetime import datetime
 from flask_limiter import Limiter
@@ -23,6 +24,58 @@ def create_app():
 
 app, limiter = create_app()
 cache = Cache()
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+
+@app.route('/create'), methods=['GET']
+def create_db():
+
+    command = '''CREATE TABLE PLN_EXCHANGE_RATES (
+        date DATE NOT NULL,
+        rate NUMERIC,
+        interpolated BOOLEAN
+    )'''
+
+    cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS PLN_EXCHANGE_RATES")
+    cur.execute(command)
+    cur.close()
+
+    return """<h1>Success</h1>"""
+
+
+@app.route('/insert/<rate>'), methods=['GET']
+def insert_rate(rate):
+    dates_and_rates = []
+    dates_and_rates.append((datetime.date.today(), rate, true))
+    dates_and_rates.append((datetime.date.today(), rate*2, true))
+    dates_and_rates.append((datetime.date.today(), rate*4, true))
+    command = "INSERT INTO PLN_EXCHANGE_RATES(date, rate, interpolated) VALUES(%s, %s, %s)"
+    cur = conn.cursor()
+    cur.execute(command, dates_and_rates)
+    cur.close()
+
+
+@app.route('/get/<date_string>', methods=['GET'])
+    command = "SELECT date, rate, interpolated FROM PLN_EXCHANGE_RATES WHERE date = '{}'".format(date_string)  #.strftime("%Y-%m-%d"))
+    transactions = []
+    try:
+        cur = conn.cursor()
+
+        cur.execute(command)
+
+        records = cur.fetchall()
+
+        for row in range(0, len(records)):
+            transactions.append(records[row])
+
+        cur.close()
+
+    except (Exception, psycopg2.DatabaseError) as err:
+        print(err)
+
+    return jsonify(transactions)
 
 
 @app.route('/')
