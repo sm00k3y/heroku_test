@@ -43,7 +43,7 @@ class Cache():
         return ret_json
 
     # Cache clears itself every 24 hours
-    def check_refresh():
+    def check_refresh(self):
         if time.time() - self.time_start > self.refresh_time:
             rates_by_day = {}
             sales_by_day = {}
