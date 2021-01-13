@@ -8,16 +8,31 @@ from flask_limiter.util import get_remote_address
 from cache import Cache
 
 
-app = flask.Flask(__name__)
-app.config['DEBUG'] = True
+# app = flask.Flask(__name__)
+# app.config['DEBUG'] = True
+def create_app():
+    app = flask.Flask(__name__)
+    app.config['DEBUG'] = True
+
+    limiter = Limiter(
+            app,
+            key_func=get_remote_address,  # limits requests per user
+            default_limits=['200 per day', '50 per hour']
+            )
+
+    return app, limiter
+
+
+
+app, limiter = create_app()
 
 cache = Cache()
 
-limiter = Limiter(
-        app,
-        key_func=get_remote_address,  # limits requests per user
-        default_limits=['200 per day', '50 per hour']
-        )
+# limiter = Limiter(
+        # app,
+        # key_func=get_remote_address,  # limits requests per user
+        # default_limits=['200 per day', '50 per hour']
+        # )
 
 
 @app.route('/')
