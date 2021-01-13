@@ -58,6 +58,7 @@ def insert_rate(rate):
 
 
 @app.route('/get/<date_string>', methods=['GET'])
+def get_by_date(date_string):
     command = "SELECT date, rate, interpolated FROM PLN_EXCHANGE_RATES WHERE date = '{}'".format(date_string)  #.strftime("%Y-%m-%d"))
     transactions = []
     try:
