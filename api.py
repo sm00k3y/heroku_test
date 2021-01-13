@@ -3,6 +3,7 @@ import db_handler
 import db_init
 import os
 import psycopg2
+import urllib.parse as urlparse
 from flask import jsonify
 from datetime import datetime, date
 from flask_limiter import Limiter
@@ -25,8 +26,23 @@ def create_app():
 
 app, limiter = create_app()
 cache = Cache()
-DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL)
+# DATABASE_URL = os.environ['DATABASE_URL']
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+url = urlparse.urlparse(os.environ['DATABASE_URL'])
+dbname = url.path[1:]
+user = url.username
+password = url.password
+host = url.hostname
+port = url.port
+
+con = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+            )
 
 
 @app.route('/create', methods=['GET'])
