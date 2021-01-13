@@ -11,6 +11,7 @@ class Cache():
     rates_by_day = {}
     sales_by_day = {}
     refresh_time = 86400  # 24h
+    time_start = time.time()
 
     def __init__(self):
         time_start = time.time()
